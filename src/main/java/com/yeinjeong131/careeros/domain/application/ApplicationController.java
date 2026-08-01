@@ -2,6 +2,7 @@ package com.yeinjeong131.careeros.domain.application;
 
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationCreateRequest;
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationResponse;
+import com.yeinjeong131.careeros.domain.application.dto.ApplicationUpdateRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,4 +37,13 @@ public class ApplicationController {
         Application application = applicationService.getApplication(id);
         return ResponseEntity.ok(new ApplicationResponse(application));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApplicationResponse> updateApplication(
+            @PathVariable Long id,
+            @RequestBody ApplicationUpdateRequest request) {
+        Application updated  = applicationService.updateApplication(id, request);
+        return ResponseEntity.ok(new ApplicationResponse(updated));
+    }
+
 }

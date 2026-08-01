@@ -40,15 +40,25 @@ public class Application {
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
-    @UpdateTimestamp
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @CreationTimestamp
+    @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     public Application(String companyName, String positionTitle, ApplicationStatus status, LocalDate appliedDate, String jobUrl, String location, String notes) {
+        this.companyName = companyName;
+        this.positionTitle = positionTitle;
+        this.status = status;
+        this.appliedDate = appliedDate;
+        this.jobUrl = jobUrl;
+        this.location = location;
+        this.notes = notes;
+    }
+
+    public void update(String companyName, String positionTitle, ApplicationStatus status, LocalDate appliedDate, String jobUrl, String location, String notes) {
         this.companyName = companyName;
         this.positionTitle = positionTitle;
         this.status = status;
