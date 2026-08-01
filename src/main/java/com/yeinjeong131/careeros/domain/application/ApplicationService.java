@@ -45,4 +45,9 @@ public class ApplicationService {
         );
         return application;
     }
+
+    public void deleteApplication(Long id) {
+        Application application = getApplication(id);
+        applicationRepository.delete(application);
+    }
 }
