@@ -30,4 +30,10 @@ public class ApplicationController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApplicationResponse> getApplication(@PathVariable Long id){
+        Application application = applicationService.getApplication(id);
+        return ResponseEntity.ok(new ApplicationResponse(application));
+    }
 }

@@ -3,6 +3,7 @@ package com.yeinjeong131.careeros.domain.application;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ApplicationService {
@@ -19,5 +20,12 @@ public class ApplicationService {
 
     public List<Application> getApplications(){
         return applicationRepository.findAll();
+    }
+
+    public Application getApplication(Long id) {
+        Optional<Application> result = applicationRepository.findById(id);
+        Application application = result.orElseThrow(() -> new IllegalArgumentException("Application not found. id=" + id));
+
+        return application;
     }
 }
