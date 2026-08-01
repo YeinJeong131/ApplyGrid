@@ -1,10 +1,12 @@
 package com.yeinjeong131.careeros.domain.application;
 
+import com.yeinjeong131.careeros.domain.application.dto.ApplicationCreateRequest;
+import com.yeinjeong131.careeros.domain.application.dto.ApplicationResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/applications")
@@ -15,8 +17,17 @@ public class ApplicationController {
     }
 
     @PostMapping
-    public ResponseEntity<Application> createApplication(@RequestBody Application application){
-        Application saved = applicationService.createApplication(application);
-        return ResponseEntity.status(201).body(saved);
+    public ResponseEntity<ApplicationResponse> createApplication(@RequestBody ApplicationCreateRequest request){
+        Application saved = applicationService.createApplication(request.toEntity());
+        return ResponseEntity.status(201).body(new ApplicationResponse(saved));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ApplicationResponse>> getApplications(){
+        List<Application> applications = applicationService.getApplications();
+        List<ApplicationResponse> response = applications.stream()
+                .map(ApplicationResponse::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
     }
 }
