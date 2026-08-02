@@ -50,8 +50,12 @@ public class ApplicationService {
         Application application = getApplication(id);
         applicationRepository.delete(application);
     }
-    
+
     public List<Application> searchApplications(String keyword) {
-        return applicationRepository.findByCompanyNameContainingOrPositionTitleContainingOrNotesContaining(keyword, keyword, keyword);
+        return applicationRepository.findByCompanyNameContainingIgnoreCaseOrPositionTitleContainingIgnoreCaseOrNotesContainingIgnoreCase(keyword, keyword, keyword);
+    }
+
+    public List<Application> filterApplicationStatus(ApplicationStatus status) {
+        return applicationRepository.findByStatus(status);
     }
 }

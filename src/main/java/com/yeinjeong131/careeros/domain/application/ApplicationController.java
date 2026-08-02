@@ -25,13 +25,17 @@ public class ApplicationController {
 
     @GetMapping
     public ResponseEntity<List<ApplicationResponse>> getApplications(
-            @RequestParam(required = false) String keyword
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) ApplicationStatus status
     ){
         List<Application> applications;
 
         if (keyword != null && !keyword.isBlank()) {
             applications = applicationService.searchApplications(keyword);
-        } else {
+        } else if (status != null) {
+            applications = applicationService.filterApplicationStatus(status);
+        }
+        else {
             applications = applicationService.getApplications();
         }
 
