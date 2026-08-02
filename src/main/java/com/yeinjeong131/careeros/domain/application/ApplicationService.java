@@ -50,4 +50,8 @@ public class ApplicationService {
         Application application = getApplication(id);
         applicationRepository.delete(application);
     }
+    
+    public List<Application> searchApplications(String keyword) {
+        return applicationRepository.findByCompanyNameContainingOrPositionTitleContainingOrNotesContaining(keyword, keyword, keyword);
+    }
 }

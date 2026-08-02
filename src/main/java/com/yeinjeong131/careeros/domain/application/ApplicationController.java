@@ -24,8 +24,17 @@ public class ApplicationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ApplicationResponse>> getApplications(){
-        List<Application> applications = applicationService.getApplications();
+    public ResponseEntity<List<ApplicationResponse>> getApplications(
+            @RequestParam(required = false) String keyword
+    ){
+        List<Application> applications;
+
+        if (keyword != null && !keyword.isBlank()) {
+            applications = applicationService.searchApplications(keyword);
+        } else {
+            applications = applicationService.getApplications();
+        }
+
         List<ApplicationResponse> response = applications.stream()
                 .map(ApplicationResponse::new)
                 .collect(Collectors.toList());
