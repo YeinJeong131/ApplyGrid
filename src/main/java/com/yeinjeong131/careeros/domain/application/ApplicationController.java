@@ -3,6 +3,9 @@ package com.yeinjeong131.careeros.domain.application;
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationCreateRequest;
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationResponse;
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationUpdateRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,28 +28,29 @@ public class ApplicationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ApplicationResponse>> getApplications(
+    public ResponseEntity<Page<ApplicationResponse>> getApplications(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) ApplicationStatus status,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "createdAt") String sortBy,
             @RequestParam(required = false, defaultValue = "desc") String direction
     ){
         Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        List<Application> applications;
+        Page<Application> applications;
 
         if (keyword != null && !keyword.isBlank()) {
-            applications = applicationService.searchApplications(keyword, sort);
+            applications = applicationService.searchApplications(keyword, pageable);
         } else if (status != null) {
-            applications = applicationService.filterApplicationStatus(status, sort);
+            applications = applicationService.filterApplicationStatus(status, pageable);
         }
         else {
-            applications = applicationService.getApplications(sort);
+            applications = applicationService.getApplications(pageable);
         }
 
-        List<ApplicationResponse> response = applications.stream()
-                .map(ApplicationResponse::new)
-                .collect(Collectors.toList());
+        Page<ApplicationResponse> response = applications.map(ApplicationResponse::new);
         return ResponseEntity.ok(response);
     }
 

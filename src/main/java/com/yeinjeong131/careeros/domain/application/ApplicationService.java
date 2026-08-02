@@ -1,6 +1,8 @@
 package com.yeinjeong131.careeros.domain.application;
 
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationUpdateRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +24,8 @@ public class ApplicationService {
         return applicationRepository.save(application);
     }
 
-    public List<Application> getApplications(Sort sort){
-        return applicationRepository.findAll(sort);
+    public Page<Application> getApplications(Pageable pageable){
+        return applicationRepository.findAll(pageable);
     }
 
     public Application getApplication(Long id) {
@@ -52,11 +54,11 @@ public class ApplicationService {
         applicationRepository.delete(application);
     }
 
-    public List<Application> searchApplications(String keyword, Sort sort) {
-        return applicationRepository.findByCompanyNameContainingIgnoreCaseOrPositionTitleContainingIgnoreCaseOrNotesContainingIgnoreCase(keyword, keyword, keyword, sort);
+    public Page<Application> searchApplications(String keyword, Pageable pageable) {
+        return applicationRepository.findByCompanyNameContainingIgnoreCaseOrPositionTitleContainingIgnoreCaseOrNotesContainingIgnoreCase(keyword, keyword, keyword, pageable);
     }
 
-    public List<Application> filterApplicationStatus(ApplicationStatus status, Sort sort) {
-        return applicationRepository.findByStatus(status, sort);
+    public Page<Application> filterApplicationStatus(ApplicationStatus status, Pageable pageable) {
+        return applicationRepository.findByStatus(status, pageable);
     }
 }
