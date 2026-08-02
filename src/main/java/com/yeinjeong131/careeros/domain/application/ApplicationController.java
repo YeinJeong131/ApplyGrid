@@ -3,6 +3,7 @@ package com.yeinjeong131.careeros.domain.application;
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationCreateRequest;
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationResponse;
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationUpdateRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,17 +27,21 @@ public class ApplicationController {
     @GetMapping
     public ResponseEntity<List<ApplicationResponse>> getApplications(
             @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) ApplicationStatus status
+            @RequestParam(required = false) ApplicationStatus status,
+            @RequestParam(required = false, defaultValue = "createdAt") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String direction
     ){
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+
         List<Application> applications;
 
         if (keyword != null && !keyword.isBlank()) {
-            applications = applicationService.searchApplications(keyword);
+            applications = applicationService.searchApplications(keyword, sort);
         } else if (status != null) {
-            applications = applicationService.filterApplicationStatus(status);
+            applications = applicationService.filterApplicationStatus(status, sort);
         }
         else {
-            applications = applicationService.getApplications();
+            applications = applicationService.getApplications(sort);
         }
 
         List<ApplicationResponse> response = applications.stream()

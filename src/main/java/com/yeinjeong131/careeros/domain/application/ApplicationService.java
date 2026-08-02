@@ -1,6 +1,7 @@
 package com.yeinjeong131.careeros.domain.application;
 
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationUpdateRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +22,8 @@ public class ApplicationService {
         return applicationRepository.save(application);
     }
 
-    public List<Application> getApplications(){
-        return applicationRepository.findAll();
+    public List<Application> getApplications(Sort sort){
+        return applicationRepository.findAll(sort);
     }
 
     public Application getApplication(Long id) {
@@ -51,11 +52,11 @@ public class ApplicationService {
         applicationRepository.delete(application);
     }
 
-    public List<Application> searchApplications(String keyword) {
-        return applicationRepository.findByCompanyNameContainingIgnoreCaseOrPositionTitleContainingIgnoreCaseOrNotesContainingIgnoreCase(keyword, keyword, keyword);
+    public List<Application> searchApplications(String keyword, Sort sort) {
+        return applicationRepository.findByCompanyNameContainingIgnoreCaseOrPositionTitleContainingIgnoreCaseOrNotesContainingIgnoreCase(keyword, keyword, keyword, sort);
     }
 
-    public List<Application> filterApplicationStatus(ApplicationStatus status) {
-        return applicationRepository.findByStatus(status);
+    public List<Application> filterApplicationStatus(ApplicationStatus status, Sort sort) {
+        return applicationRepository.findByStatus(status, sort);
     }
 }
