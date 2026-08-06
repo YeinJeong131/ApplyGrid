@@ -147,8 +147,9 @@ sequenceDiagram
     participant Repo as Repository
     participant DB as PostgreSQL
 
-    C->>Ctrl: POST /api/applications
+    C->>Ctrl: POST /api/applications (CreateRequest)
     Ctrl->>Ctrl: @Valid validates request DTO
+    Ctrl->>Ctrl: request.toEntity()
     Ctrl->>Svc: createApplication(entity)
     Svc->>Repo: existsByCompanyNameAndPositionTitle()
     Repo->>DB: SELECT
@@ -162,7 +163,8 @@ sequenceDiagram
         DB-->>Repo: saved row
         Repo-->>Svc: entity
         Svc-->>Ctrl: entity
-        Ctrl-->>C: 201 Created + ApplicationResponse
+        Ctrl->>Ctrl: new ApplicationResponse(entity)
+        Ctrl-->>C: 201 Created (ApplicationResponse)
     end
 ```
 
