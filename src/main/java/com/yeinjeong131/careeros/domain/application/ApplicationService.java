@@ -21,6 +21,13 @@ public class ApplicationService {
 
     // To create an application record
     public Application createApplication(Application application) {
+        boolean exists = applicationRepository.existsByCompanyNameAndPositionTitle(
+                application.getCompanyName(), application.getPositionTitle());
+
+        if (exists) {
+            throw new DuplicateApplicationException(application.getCompanyName(), application.getPositionTitle());
+        }
+
         return applicationRepository.save(application);
     }
 

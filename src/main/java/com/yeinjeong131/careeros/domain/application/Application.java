@@ -21,7 +21,7 @@ public class Application {
     @Column(name = "company_name", length = 100, nullable = false)
     private String companyName;
 
-    @Column(name = "position_title", length = 100, nullable = false)
+    @Column(name = "position_title", length = 100)
     private String positionTitle;
 
     @Enumerated(EnumType.STRING)

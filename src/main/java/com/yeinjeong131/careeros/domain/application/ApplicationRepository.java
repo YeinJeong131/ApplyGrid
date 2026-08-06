@@ -12,4 +12,5 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     Page<Application> findByStatus(ApplicationStatus status, Pageable pageable);
 
+    boolean existsByCompanyNameAndPositionTitle(String companyName, String positionTitle);
 }

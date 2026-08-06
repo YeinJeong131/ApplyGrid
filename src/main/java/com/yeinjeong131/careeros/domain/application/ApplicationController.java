@@ -3,6 +3,7 @@ package com.yeinjeong131.careeros.domain.application;
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationCreateRequest;
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationResponse;
 import com.yeinjeong131.careeros.domain.application.dto.ApplicationUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ public class ApplicationController {
     }
 
     @PostMapping
-    public ResponseEntity<ApplicationResponse> createApplication(@RequestBody ApplicationCreateRequest request){
+    public ResponseEntity<ApplicationResponse> createApplication(@Valid @RequestBody ApplicationCreateRequest request){
         Application saved = applicationService.createApplication(request.toEntity());
         return ResponseEntity.status(201).body(new ApplicationResponse(saved));
     }
