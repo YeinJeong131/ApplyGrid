@@ -30,7 +30,7 @@ public class ApplicationService {
 
     public Application getApplication(Long id) {
         Optional<Application> result = applicationRepository.findById(id);
-        Application application = result.orElseThrow(() -> new IllegalArgumentException("Application not found. id=" + id));
+        Application application = result.orElseThrow(() -> new ApplicationNotFoundException(id));
 
         return application;
     }
